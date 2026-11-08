@@ -42,4 +42,4 @@ jobs:
           GEMINI_API_KEY_ROUTER: ${{ secrets.GEMINI_API_KEY_ROUTER }}
           ROUTER_DATABASE_URL: ${{ secrets.ROUTER_DATABASE_URL }}
         run: |
-          python telegram_router.py
+          exec python telegram_router.py
