@@ -3674,21 +3674,7 @@ async def rubika_admin_poller():
         await asyncio.sleep(3600)
 # =======================================================================
 
-# --- سینک نهایی زمان‌بندی‌شده: یک دقیقه قبل از پایان چرخه ---
-# اجرای بعدی با cron هر ۵ ساعت شروع می‌شود و این اجرا را لغو می‌کند،
-# پس فلاش در دقیقه ۲۹۹ بعد از شروع اجرا انجام می‌شود تا پیش از لغو،
-# رم روی دیتابیس نوشته شده باشد. (تایم‌اوت ۳۵۸ دقیقه‌ای جاب به‌خاطر
-# لغو cron هرگز به آن نمی‌رسد.)
-async def _scheduled_final_flush():
-    await asyncio.sleep(299 * 60)
-    try:
-        await asyncio.to_thread(flush_all_to_db)
-        print("✅ سینک نهایی رم به دیتابیس انجام شد (یک دقیقه قبل از پایان اجرا).", flush=True)
-    except Exception as e:
-        print(f"⚠️ خطا در سینک نهایی: {e}", flush=True)
-
 async def main():
-    asyncio.create_task(_scheduled_final_flush())
     print("🚀 در حال راه‌اندازی...", flush=True)
     try: requests.get(f"https://api.telegram.org/bot{CONTROL_BOT_TOKEN}/deleteWebhook?drop_pending_updates=True", timeout=60)
     except: pass
