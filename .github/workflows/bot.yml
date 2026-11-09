@@ -5,6 +5,10 @@ on:
     - cron: '58 */5 * * *'
   workflow_dispatch:
 
+permissions:
+  contents: read
+  actions: write
+
 concurrency:
   group: run-telegram-router
   cancel-in-progress: true
@@ -12,7 +16,6 @@ concurrency:
 jobs:
   run-bot:
     runs-on: ubuntu-latest
-    timeout-minutes: 358
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -41,5 +44,6 @@ jobs:
           EITAA_TOKEN: ${{ secrets.EITAA_TOKEN }}
           GEMINI_API_KEY_ROUTER: ${{ secrets.GEMINI_API_KEY_ROUTER }}
           ROUTER_DATABASE_URL: ${{ secrets.ROUTER_DATABASE_URL }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           exec python telegram_router.py
